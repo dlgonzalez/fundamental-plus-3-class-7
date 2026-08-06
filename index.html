@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamental Plus 3 - Class 7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+        
+        body { font-family: 'Nunito', sans-serif; background-color: #f8fafc; color: #334155; }
+        
+        /* Tab Navigation */
+        .tab-btn { transition: all 0.3s ease; }
+        .tab-btn.active { background-color: #4f46e5; color: white; border-bottom: 4px solid #312e81; transform: translateY(-2px); }
+        .tab-content { display: none; animation: fadeIn 0.4s; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Inputs & Elements */
+        .quiz-input { border: 2px solid #cbd5e1; transition: border-color 0.3s; }
+        .quiz-input:focus { outline: none; border-color: #4f46e5; }
+        .correct { border-color: #22c55e !important; background-color: #f0fdf4 !important; color: #15803d; }
+        .incorrect { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #b91c1c; }
+        
+        .activity-pill { cursor: pointer; transition: all 0.2s; user-select: none; }
+        .activity-pill:hover { transform: scale(1.05); }
+        .drop-zone { min-height: 120px; transition: all 0.3s; }
+        .drop-zone:hover { background-color: #f1f5f9; }
+
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 1rem; }
+        .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* Custom Scrollbar for Mega Quiz */
+        .mega-quiz-container { max-height: 500px; overflow-y: auto; }
+        .mega-quiz-container::-webkit-scrollbar { width: 8px; }
+        .mega-quiz-container::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .mega-quiz-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .mega-quiz-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <header class="relative bg-gradient-to-br from-indigo-900 via-blue-800 to-indigo-700 text-white shadow-2xl overflow-hidden">
+        <div class="relative max-w-6xl mx-auto px-4 py-10">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center bg-white/10 px-3 py-1 rounded-full text-sm font-bold mb-4 border border-white/20 backdrop-blur-sm">
+                        <i class="fas fa-university mr-2 text-yellow-300"></i> Colombo Americano Cali
+                    </div>
+                    <h1 class="text-4xl font-extrabold mb-3">Fundamental Plus 3</h1>
+                    <h2 class="text-2xl text-blue-100 font-semibold flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                        <span class="bg-indigo-800/80 px-3 py-1 rounded-lg border border-indigo-400/30 text-lg">Unit 8</span> 
+                        <span>Class 7: Plan for Fun! 🏕️</span>
+                    </h2>
+                </div>
+                <div class="w-full lg:w-auto bg-white/10 p-5 rounded-2xl backdrop-blur-md border border-white/20 shadow-xl max-w-lg">
+                    <h3 class="font-bold text-yellow-300 mb-2"><i class="fas fa-bullseye mr-2"></i>Communicative Objectives:</h3>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-3 text-green-400"></i><span><b>Master</b> gerunds after prepositions and as subjects/objects.</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-3 text-green-400"></i><span><b>Categorize</b> leisure activities with <i>have, make, do, go</i>.</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle mt-1 mr-3 text-green-400"></i><span><b>Express</b> preferences using <i>would rather / would prefer</i>.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8">
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8 bg-white p-2 rounded-2xl shadow-sm border border-slate-200 justify-center">
+            <button onclick="openTab('warmup')" id="btn-warmup" class="tab-btn active px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">1. Warm Up 🔥</button>
+            <button onclick="openTab('grammar1')" id="btn-grammar1" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">2. Mega Grammar ⚙️</button>
+            <button onclick="openTab('vocab')" id="btn-vocab" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">3. Vocabulary 🏕️</button>
+            <button onclick="openTab('listening')" id="btn-listening" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">4. Listen & Speak 🎧</button>
+            <button onclick="openTab('grammar2')" id="btn-grammar2" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">5. Preferences ⚖️</button>
+            <button onclick="openTab('speaking')" id="btn-speaking" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">6. Speaking 🗣️</button>
+            <button onclick="openTab('wrapup')" id="btn-wrapup" class="tab-btn px-4 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50">7. Wrap Up 🏁</button>
+        </div>
+
+        <!-- TAB 1: WARM UP -->
+        <section id="warmup" class="tab-content active">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-2">Gerund Object Recall 🧠</h2>
+                    <p class="text-lg text-slate-600">Last class we learned about gerunds acting as objects after certain verbs. Let's see what you remember!</p>
+                </div>
+
+                <div class="bg-blue-50 p-8 rounded-2xl border border-blue-200 shadow-sm max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold text-blue-900 mb-4 text-center"><i class="fas fa-bolt text-yellow-500 mr-2"></i>Speed Choice</h3>
+                    <p class="text-center text-slate-700 mb-6">Choose the correct form of the verb to follow the main verb. Be careful!</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">1. I enjoy ________ books on the weekend.</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="reading"><option value="">-- Choose --</option><option value="to read">to read</option><option value="reading">reading</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">2. She can't stand ________ in long lines.</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="waiting"><option value="">-- Choose --</option><option value="to wait">to wait</option><option value="waiting">waiting</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">3. He finished ________ his essay at midnight.</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="writing"><option value="">-- Choose --</option><option value="to write">to write</option><option value="writing">writing</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">4. They avoid ________ on the highway during rush hour.</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="driving"><option value="">-- Choose --</option><option value="to drive">to drive</option><option value="driving">driving</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">5. Do you mind ________ the window?</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="opening"><option value="">-- Choose --</option><option value="to open">to open</option><option value="opening">opening</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 mb-2">6. Keep ________! You are doing a great job.</p>
+                            <select class="warmup-quiz w-full border rounded p-2 outline-none text-blue-700 font-bold bg-blue-50" data-answer="practicing"><option value="">-- Choose --</option><option value="to practice">to practice</option><option value="practicing">practicing</option></select>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6">
+                        <button onclick="checkWarmup()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">Check Memory</button>
+                    </div>
+                </div>
+
+                <!-- Game 2: Right or Wrong (Gerund Patrol) -->
+                <div class="bg-purple-50 p-8 rounded-2xl border border-purple-200 shadow-sm max-w-4xl mx-auto mt-8">
+                    <h3 class="text-2xl font-bold text-purple-900 mb-4 text-center"><i class="fas fa-traffic-light text-pink-500 mr-2"></i>Gerund Patrol: Right or Wrong?</h3>
+                    <p class="text-center text-slate-700 mb-6">Let's look at some more verbs that take gerunds! Are these sentences grammatically correct? Act as the teacher and decide.</p>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- Card 1 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">1. "I miss to play video games with my brother."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, false, 'After \'miss\', we must use a gerund: miss playing.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, false, 'After \'miss\', we must use a gerund: miss playing.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">2. "She suggested ordering pizza for dinner."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, true, 'Perfect! \'Suggest\' is followed by a gerund.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, true, 'Perfect! \'Suggest\' is followed by a gerund.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">3. "We practiced to speak English yesterday."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, false, 'After \'practice\', we must use a gerund: practiced speaking.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, false, 'After \'practice\', we must use a gerund: practiced speaking.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">4. "He gave up smoking two years ago."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, true, 'Correct! \'Give up\' is a phrasal verb that takes a gerund.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, true, 'Correct! \'Give up\' is a phrasal verb that takes a gerund.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                        <!-- Card 5 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">5. "I don't mind to help you with your homework."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, false, 'After \'don\\'t mind\', use a gerund: don\\'t mind helping.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, false, 'After \'don\\'t mind\', use a gerund: don\\'t mind helping.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                        <!-- Card 6 -->
+                        <div class="bg-white p-4 rounded-xl border border-purple-100 shadow-sm flex flex-col justify-between">
+                            <p class="mb-4 text-slate-700 font-bold">6. "The doctor recommended drinking more water."</p>
+                            <div class="flex gap-2">
+                                <button onclick="checkRightWrong(this, true, true, 'Perfect! \'Recommend\' takes a gerund.')" class="flex-1 bg-slate-100 hover:bg-green-100 text-slate-600 font-bold py-2 rounded transition">Correct ✅</button>
+                                <button onclick="checkRightWrong(this, false, true, 'Perfect! \'Recommend\' takes a gerund.')" class="flex-1 bg-slate-100 hover:bg-red-100 text-slate-600 font-bold py-2 rounded transition">Incorrect ❌</button>
+                            </div>
+                            <p class="rw-feedback text-sm mt-3 font-bold hidden"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: GRAMMAR 1 (Prepositions & Mega Practice) -->
+        <section id="grammar1" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-2">Gerunds After Prepositions 🔗</h2>
+                    <p class="text-lg text-slate-600">You know gerunds as subjects and objects. Now, let's learn the Golden Rule of Prepositions.</p>
+                </div>
+
+                <!-- Grammar Presentation Box -->
+                <div class="bg-slate-800 text-white p-8 rounded-2xl shadow-xl mb-10 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10"><i class="fas fa-link text-9xl"></i></div>
+                    <h3 class="text-3xl font-black text-yellow-400 mb-4 border-b border-slate-600 pb-2 relative z-10">The Golden Rule</h3>
+                    <p class="text-xl mb-6 relative z-10">If a verb comes immediately after a preposition (<i>in, on, at, about, of, for, with, etc.</i>), that verb <span class="bg-yellow-400 text-slate-900 font-bold px-2 rounded">MUST be a gerund (-ing)</span>.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 relative z-10">
+                        <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 shadow-inner">
+                            <h4 class="text-green-400 font-bold text-lg mb-3"><i class="fas fa-smile mr-2"></i>Adjective + Preposition</h4>
+                            <ul class="space-y-3 font-mono text-sm">
+                                <li><b>good / bad <span class="text-pink-400">at</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">drawing</span></li>
+                                <li><b>interested <span class="text-pink-400">in</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">learning</span></li>
+                                <li><b>afraid <span class="text-pink-400">of</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">failing</span></li>
+                                <li><b>excited <span class="text-pink-400">about</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">going</span></li>
+                                <li><b>tired <span class="text-pink-400">of</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">waiting</span></li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 shadow-inner">
+                            <h4 class="text-blue-400 font-bold text-lg mb-3"><i class="fas fa-running mr-2"></i>Verb + Preposition</h4>
+                            <ul class="space-y-3 font-mono text-sm">
+                                <li><b>think <span class="text-pink-400">about</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">moving</span></li>
+                                <li><b>apologize <span class="text-pink-400">for</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">being</span> late</li>
+                                <li><b>believe <span class="text-pink-400">in</span></b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">working</span> hard</li>
+                                <li><b>look forward <span class="text-pink-400">to</span>*</b> <i class="fas fa-arrow-right text-slate-500 mx-2"></i> <span class="text-yellow-300">seeing</span> you</li>
+                            </ul>
+                            <p class="text-xs text-slate-400 mt-3">*Note: Here "to" acts as a preposition, not an infinitive marker!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEGA EXERCISE BLOCK -->
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-8 rounded-3xl border border-indigo-100 shadow-sm">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-black text-indigo-900 mb-2"><i class="fas fa-dumbbell text-indigo-500 mr-2"></i>The Mega Gerund Workout</h3>
+                        <p class="text-slate-700">30 Questions. 3 Categories. Prove your gerund mastery!</p>
+                    </div>
+
+                    <!-- Mega Quiz Tabs -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-6">
+                        <button onclick="switchMegaTab('subj')" id="mega-tab-subj" class="px-4 py-2 rounded-lg font-bold text-white bg-indigo-600 transition shadow">1. Subjects (10)</button>
+                        <button onclick="switchMegaTab('obj')" id="mega-tab-obj" class="px-4 py-2 rounded-lg font-bold text-indigo-600 bg-white border border-indigo-200 transition hover:bg-indigo-50">2. Objects (10)</button>
+                        <button onclick="switchMegaTab('prep')" id="mega-tab-prep" class="px-4 py-2 rounded-lg font-bold text-indigo-600 bg-white border border-indigo-200 transition hover:bg-indigo-50">3. Prepositions (10)</button>
+                    </div>
+
+                    <!-- Mega Quiz Containers (Injected by JS) -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mega-quiz-container">
+                        
+                        <div id="mega-subj" class="mega-section space-y-4">
+                            <h4 class="font-bold text-indigo-800 text-xl border-b pb-2 mb-4">Gerunds as the Subject</h4>
+                            <p class="text-sm text-slate-500 mb-4">Fill in the blank with the correct gerund form of the verb in parentheses.</p>
+                            <div id="subj-questions" class="space-y-3"></div>
+                            <button onclick="checkMegaQuiz('subj')" class="mt-4 w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition">Check Subjects</button>
+                        </div>
+                        
+                        <div id="mega-obj" class="mega-section space-y-4 hidden">
+                            <h4 class="font-bold text-blue-800 text-xl border-b pb-2 mb-4">Gerunds as the Object</h4>
+                            <p class="text-sm text-slate-500 mb-4">Fill in the blank with the correct gerund form of the verb in parentheses.</p>
+                            <div id="obj-questions" class="space-y-3"></div>
+                            <button onclick="checkMegaQuiz('obj')" class="mt-4 w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">Check Objects</button>
+                        </div>
+                        
+                        <div id="mega-prep" class="mega-section space-y-4 hidden">
+                            <h4 class="font-bold text-teal-800 text-xl border-b pb-2 mb-4">Gerunds after Prepositions</h4>
+                            <p class="text-sm text-slate-500 mb-4">Fill in the blank with the correct gerund form of the verb in parentheses.</p>
+                            <div id="prep-questions" class="space-y-3"></div>
+                            <button onclick="checkMegaQuiz('prep')" class="mt-4 w-full bg-teal-600 text-white font-bold py-3 rounded-xl hover:bg-teal-700 transition">Check Prepositions</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Conversation Questions (Mega Grammar) -->
+                <div class="bg-indigo-900 p-8 rounded-2xl shadow-xl text-white mt-10">
+                    <h3 class="text-2xl font-extrabold text-yellow-400 mb-4"><i class="fas fa-comments mr-2"></i>Grammar in Action: Pair Chat</h3>
+                    <p class="text-indigo-200 mb-6 text-sm">Ask and answer these questions with a partner. Pay attention to the gerunds!</p>
+                    <div class="grid md:grid-cols-2 gap-4 text-left max-w-4xl mx-auto">
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">1. Are you <b>interested in learning</b> another language besides English?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">2. Do you <b>enjoy spending</b> your weekends outdoors?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">3. Is <b>waking up early</b> difficult for you?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">4. What is something you are really <b>good at doing</b>?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">5. Do you <b>miss playing</b> any games from your childhood?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">6. Does <b>listening to music</b> help you study?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">7. What is a bad habit you want to <b>give up doing</b>?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">8. Is <b>learning a new language</b> easy or difficult for you?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">9. Do you <b>avoid walking</b> alone at night?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">10. Are you <b>afraid of speaking</b> in public?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">11. Do you <b>practice speaking</b> English outside of class?</div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">12. Is <b>traveling to new countries</b> important to you?</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 3: VOCABULARY -->
+        <section id="vocab" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-2">Lesson 2: Plan for Fun! 🏕️</h2>
+                    <p class="text-lg text-slate-600">Leisure activities and their verbs: Have, Make, Do, and Go.</p>
+                </div>
+
+                <!-- Part A: Sorting Collocations -->
+                <div class="bg-orange-50 p-8 rounded-2xl border border-orange-100 mb-10 shadow-sm">
+                    <h3 class="text-2xl font-bold text-orange-800 mb-4"><i class="fas fa-sitemap mr-2"></i>A. Match the Verbs</h3>
+                    <p class="text-slate-700 mb-6">Click a leisure activity, then click the correct verb box it belongs to. Use a dictionary if necessary!</p>
+                    
+                    <div id="vocab-bank" class="flex flex-wrap gap-2 justify-center mb-8 bg-white p-4 rounded-xl border border-orange-200 shadow-inner">
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">a barbecue</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">aerobics</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">jewelry</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">paddle boarding</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">to a park</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">a potluck meal</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">furniture</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">kayaking</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">skating</span>
+                        <span class="activity-pill bg-slate-100 px-3 py-2 rounded-lg font-bold border border-slate-300 text-slate-700 text-sm" onclick="selectVocab(this)">yoga</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-xl border-2 border-dashed border-red-400 text-center drop-zone flex flex-col" onclick="moveToVocabZone(this, 'Have')">
+                            <h4 class="font-black text-red-700 text-xl mb-2">HAVE</h4>
+                            <p class="text-xs text-slate-400 mb-2 italic">e.g., a picnic</p>
+                            <div class="flex flex-col gap-2 mt-auto"></div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border-2 border-dashed border-blue-400 text-center drop-zone flex flex-col" onclick="moveToVocabZone(this, 'Make')">
+                            <h4 class="font-black text-blue-700 text-xl mb-2">MAKE</h4>
+                            <p class="text-xs text-slate-400 mb-2 italic">e.g., pottery</p>
+                            <div class="flex flex-col gap-2 mt-auto"></div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border-2 border-dashed border-green-400 text-center drop-zone flex flex-col" onclick="moveToVocabZone(this, 'Do')">
+                            <h4 class="font-black text-green-700 text-xl mb-2">DO</h4>
+                            <p class="text-xs text-slate-400 mb-2 italic">e.g., crafts</p>
+                            <div class="flex flex-col gap-2 mt-auto"></div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border-2 border-dashed border-purple-400 text-center drop-zone flex flex-col" onclick="moveToVocabZone(this, 'Go')">
+                            <h4 class="font-black text-purple-700 text-xl mb-2">GO</h4>
+                            <p class="text-xs text-slate-400 mb-2 italic">e.g., for a drive</p>
+                            <div class="flex flex-col gap-2 mt-auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Part B: Online Comments -->
+                <div class="bg-blue-50 p-8 rounded-2xl border border-blue-200">
+                    <h3 class="font-bold text-blue-900 text-xl mb-4"><i class="fas fa-comments mr-2"></i>B. Online Comments</h3>
+                    <p class="text-slate-700 mb-6">Complete the online comments with the correct forms of <b>have, make, do,</b> and <b>go</b>. Pay attention to grammar (gerunds after prepositions or as subjects!)</p>
+                    
+                    <div class="space-y-6 max-w-4xl mx-auto">
+                        <!-- Comment 1 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex gap-4">
+                            <div class="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center font-bold text-pink-700 shrink-0">M</div>
+                            <div class="text-sm text-slate-700 leading-loose">
+                                <p class="font-bold text-indigo-700 mb-1">Molly</p>
+                                I do all kinds of things that people say help with stress. I <b>1.</b> <input type="text" id="cb1" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> yoga; in fact, I <b>2.</b> <input type="text" id="cb2" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> to my yoga class four days a week. I almost always <b>3.</b> <input type="text" id="cb3" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> swimming or skating on weekends, and I also <b>4.</b> <input type="text" id="cb4" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> aerobics. I exercise a lot, but I'm still really stressed!
+                            </div>
+                        </div>
+                        <!-- Comment 2 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex gap-4">
+                            <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center font-bold text-green-700 shrink-0">J</div>
+                            <div class="text-sm text-slate-700 leading-loose">
+                                <p class="font-bold text-indigo-700 mb-1">Jen <span class="text-slate-400 font-normal text-xs ml-2">Replying to @Molly</span></p>
+                                Wow, you need to relax! <b>5.</b> <input type="text" id="cb5" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> yoga and lots of exercise is great, but what about relaxing and having fun? <b>6.</b> <input type="text" id="cb6" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> a craft—<b>7.</b> <input type="text" id="cb7" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> jewelry or candles, or color in a coloring book. <b>8.</b> <input type="text" id="cb8" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> furniture really badly is my hobby, but it's fun and relaxing!
+                            </div>
+                        </div>
+                        <!-- Comment 3 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex gap-4">
+                            <div class="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center font-bold text-yellow-700 shrink-0">L</div>
+                            <div class="text-sm text-slate-700 leading-loose">
+                                <p class="font-bold text-indigo-700 mb-1">Lance <span class="text-slate-400 font-normal text-xs ml-2">Replying to @Jen</span></p>
+                                I'm not into arts and crafts, but I agree with Jen. Relax! I like <b>9.</b> <input type="text" id="cb9" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> for a drive in the country or <b>10.</b> <input type="text" id="cb10" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> a picnic with friends. Get together with a group of friends and <b>11.</b> <input type="text" id="cb11" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> a potluck meal or <b>12.</b> <input type="text" id="cb12" class="quiz-input w-20 rounded text-center px-1 font-bold text-blue-600"> to a park. Have some fun!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center"><button onclick="checkComments()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">Check Spelling & Grammar</button></div>
+                </div>
+
+                <!-- Part C: Speaking Practice -->
+                <div class="bg-teal-50 p-8 rounded-2xl border border-teal-200 mt-10 shadow-sm">
+                    <h3 class="font-bold text-teal-900 text-xl mb-4"><i class="fas fa-microphone-alt mr-2"></i>C. Over to You!</h3>
+                    <p class="text-slate-700 mb-6">Now tell your partner about your own leisure activities using <b>have, make, do,</b> and <b>go</b>.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        <div class="bg-white p-5 rounded-xl border-l-4 border-teal-400 shadow-sm">
+                            <h4 class="font-bold text-teal-800 mb-2">My Activities</h4>
+                            <ul class="space-y-2 text-sm text-slate-600 font-mono">
+                                <li>• I often <span class="font-bold text-teal-600">go</span>...</li>
+                                <li>• On weekends, I <span class="font-bold text-teal-600">do</span>...</li>
+                                <li>• I really like to <span class="font-bold text-teal-600">make</span>...</li>
+                                <li>• Once a month, we <span class="font-bold text-teal-600">have</span>...</li>
+                            </ul>
+                        </div>
+                        <div class="bg-teal-800 text-white p-5 rounded-xl shadow-sm flex flex-col justify-center text-center">
+                            <i class="fas fa-comment-dots text-4xl mb-3 text-teal-300"></i>
+                            <p class="text-sm italic">"On weekends, I usually <b>go</b> for a run in the park, and then I <b>do</b> some yoga. Sometimes my family <b>has</b> a barbecue on Sunday."</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 4: LISTENING & PRONUNCIATION -->
+        <section id="listening" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-headphones-alt text-4xl text-indigo-500 mr-4"></i>
+                    <div>
+                        <h2 class="text-3xl font-bold text-indigo-700">Weekend Plans</h2>
+                        <p class="text-slate-500 font-bold bg-slate-100 px-2 py-1 rounded inline-block text-sm">8.02 LISTENING SKILL — Listen for details</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-10">
+                    <!-- Survey & Audio -->
+                    <div class="space-y-6">
+                        <div class="bg-yellow-50 p-6 rounded-2xl border border-yellow-200">
+                            <h3 class="font-bold text-yellow-800 text-lg mb-2">A. Class Survey</h3>
+                            <ul class="text-sm text-slate-700 space-y-2 list-disc list-inside">
+                                <li>How many people usually do the same activities every weekend?</li>
+                                <li>What are the most common weekend activities in this class?</li>
+                                <li>Do you plan your weekends ahead of time?</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-800 p-6 rounded-2xl flex flex-col items-center shadow-lg text-white">
+                            <i class="fas fa-podcast text-4xl text-blue-400 mb-4"></i>
+                            <p class="mb-4 font-bold text-center">Listen to Kate & Ken's conversation.</p>
+                            <audio controls class="w-full max-w-sm outline-none">
+                                <source src="https://english4real.com/practice/a/viii_td-3rd-09-01-1.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <p class="text-slate-400 text-xs mt-3 text-center">Teacher will play Audio Track 8.02</p>
+                        </div>
+                    </div>
+
+                    <!-- Listening Questions -->
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-200 flex flex-col">
+                        <h3 class="font-bold text-blue-900 text-lg mb-4">B. Answer the Details</h3>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex-grow space-y-4">
+                            <div>
+                                <p class="font-bold text-slate-700 text-sm mb-1">1. What activities does Kate describe as "the same stuff"?</p>
+                                <input type="text" class="w-full border rounded p-2 text-sm outline-none focus:border-blue-400" placeholder="Your notes...">
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 text-sm mb-1">2. What does Ken say he does NOT like doing?</p>
+                                <input type="text" class="w-full border rounded p-2 text-sm outline-none focus:border-blue-400" placeholder="Your notes...">
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 text-sm mb-1">3. What do they decide to do on Saturday?</p>
+                                <input type="text" class="w-full border rounded p-2 text-sm outline-none focus:border-blue-400" placeholder="Your notes...">
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-700 text-sm mb-1">4. What do they decide to do on Sunday?</p>
+                                <input type="text" class="w-full border rounded p-2 text-sm outline-none focus:border-blue-400" placeholder="Your notes...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Part C: Categories -->
+                <div class="bg-teal-50 p-8 rounded-2xl border border-teal-200 mb-10">
+                    <h3 class="font-bold text-teal-900 text-xl mb-4"><i class="fas fa-sitemap mr-2"></i>C. Thinking Skill: Analyze Categories</h3>
+                    <p class="text-slate-700 mb-6 text-sm">Write the activities from the conversation (and add your own!) into these four categories.</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-black text-teal-700 mb-2 border-b pb-1"><i class="fas fa-palette mr-1"></i>Creative</h4>
+                            <textarea class="w-full h-24 border-none outline-none text-sm resize-none text-slate-600" placeholder="e.g. Making pottery..."></textarea>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-black text-indigo-700 mb-2 border-b pb-1"><i class="fas fa-landmark mr-1"></i>Cultural</h4>
+                            <textarea class="w-full h-24 border-none outline-none text-sm resize-none text-slate-600">going to a movie, </textarea>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-black text-orange-700 mb-2 border-b pb-1"><i class="fas fa-running mr-1"></i>Physical</h4>
+                            <textarea class="w-full h-24 border-none outline-none text-sm resize-none text-slate-600" placeholder="e.g. Playing tennis..."></textarea>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h4 class="font-black text-pink-700 mb-2 border-b pb-1"><i class="fas fa-users mr-1"></i>Social</h4>
+                            <textarea class="w-full h-24 border-none outline-none text-sm resize-none text-slate-600">hanging out at somebody's house, </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pronunciation -->
+                <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-8 rounded-2xl border border-purple-200">
+                    <h3 class="font-bold text-purple-900 text-2xl mb-4"><i class="fas fa-bullhorn mr-2"></i>Pronunciation: <i>-ould</i> words</h3>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 items-center">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-purple-200 w-full md:w-1/2">
+                            <p class="font-bold text-slate-800 mb-3 text-sm uppercase tracking-wide">Read Aloud in Pairs:</p>
+                            <p class="text-slate-700 mb-2"><b>Omar:</b> <span class="text-purple-700 font-bold">Would</span> you like to go to the new museum tomorrow?</p>
+                            <p class="text-slate-700 mb-2"><b>Jamal:</b> That sounds great. We <span class="text-purple-700 font-bold">should</span> go early, when there are fewer people.</p>
+                            <p class="text-slate-700 mb-2"><b>Omar:</b> Actually, I <span class="text-purple-700 font-bold">would</span> rather go in the afternoon. Is that OK?</p>
+                            <p class="text-slate-700 mb-2"><b>Jamal:</b> That's fine. <span class="text-purple-700 font-bold">Could</span> you pick me up?</p>
+                            <p class="text-slate-700"><b>Omar:</b> Sure.</p>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 space-y-4">
+                            <div class="bg-purple-800 text-white p-4 rounded-xl shadow-md text-center">
+                                <i class="fas fa-volume-up text-3xl mb-2 text-pink-300"></i>
+                                <p class="font-bold text-lg">The "L" is SILENT!</p>
+                                <p class="text-sm text-purple-200">Would, Should, and Could all have the exact same vowel sound: /ʊ/ (like in "book" or "good").</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 5: GRAMMAR 2 (Gerund vs Infinitive) -->
+        <section id="grammar2" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-2">Expressing Preferences ⚖️</h2>
+                    <p class="text-lg text-slate-600">Verbs + Gerund or Infinitive or Base Verb</p>
+                </div>
+
+                <!-- Explanation / Examples -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-10 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-lg mb-4">A. Study the Examples</h3>
+                    <div class="grid md:grid-cols-2 gap-6 font-mono text-sm">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-400 space-y-2">
+                            <p>I love <span class="font-bold text-indigo-600 underline">going</span> out to hear live music.</p>
+                            <p>I like <span class="font-bold text-indigo-600 underline">to go</span> to dinner and a movie.</p>
+                            <p>I prefer <span class="font-bold text-indigo-600 underline">to watch</span> TV at home.</p>
+                            <p>I prefer <span class="font-bold text-indigo-600 underline">doing</span> physical activities.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-pink-400 space-y-2">
+                            <p>I'd like <span class="font-bold text-pink-600 underline">to do</span> something creative.</p>
+                            <p>I would prefer <span class="font-bold text-pink-600 underline">to have</span> the picnic first.</p>
+                            <p>I'd rather <span class="font-bold text-pink-600 underline">do</span> a physical activity.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-yellow-100/50 p-4 rounded-xl border border-yellow-300">
+                        <p class="font-bold text-yellow-800 mb-2"><i class="fas fa-exclamation-circle mr-2"></i>Make It Real:</p>
+                        <p class="text-sm text-yellow-900">Although the meaning of <i>hate, like, love,</i> and <i>prefer</i> is the same when used with an infinitive or with a gerund, the <b>infinitive</b> form is more commonly used in American English.</p>
+                    </div>
+                </div>
+
+                <!-- Rules Quiz -->
+                <div class="bg-indigo-50 p-8 rounded-2xl border border-indigo-200 mb-10">
+                    <h3 class="text-xl font-bold text-indigo-900 mb-4"><i class="fas fa-list-ol mr-2"></i>Complete the Rules</h3>
+                    <p class="text-slate-700 mb-6 text-sm">Based on the examples above, select all the correct verb forms that can follow these phrases.</p>
+                    
+                    <div class="space-y-4 max-w-3xl mx-auto">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="font-bold text-slate-800">1. love, like, hate, prefer +</span>
+                            <div class="flex gap-2">
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q1 mr-1" value="base">base verb</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q1 mr-1" value="inf">infinitive</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q1 mr-1" value="ing">-ing verb</label>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="font-bold text-slate-800">2. would like +</span>
+                            <div class="flex gap-2">
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q2 mr-1" value="base">base verb</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q2 mr-1" value="inf">infinitive</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q2 mr-1" value="ing">-ing verb</label>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="font-bold text-slate-800">3. would prefer +</span>
+                            <div class="flex gap-2">
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q3 mr-1" value="base">base verb</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q3 mr-1" value="inf">infinitive</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q3 mr-1" value="ing">-ing verb</label>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="font-bold text-slate-800">4. would rather +</span>
+                            <div class="flex gap-2">
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q4 mr-1" value="base">base verb</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q4 mr-1" value="inf">infinitive</label>
+                                <label class="bg-indigo-100 px-3 py-1 rounded cursor-pointer hover:bg-indigo-200 text-sm font-bold text-indigo-800"><input type="checkbox" class="gram2-q4 mr-1" value="ing">-ing verb</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-center gap-4">
+                        <button onclick="checkGrammar2Rules()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">Check Rules</button>
+                        <span id="g2-rules-fb" class="font-bold hidden"></span>
+                    </div>
+                </div>
+
+                <!-- B. Email Fill-in -->
+                <div class="bg-orange-50 p-8 rounded-2xl border border-orange-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-orange-900 mb-4"><i class="fas fa-envelope-open-text mr-2"></i>B. Complete the Email</h3>
+                    <p class="text-slate-700 mb-6 text-sm">Apply the rules you just learned! Type the correct form of the verbs in parentheses.</p>
+                    
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm font-mono text-slate-700 leading-loose max-w-3xl mx-auto text-sm md:text-base">
+                        <p class="text-xs text-slate-400 mb-4 border-b pb-2">To: Group Chat<br>Subject: Weekend Plans</p>
+                        Hey, guys. Would you like <b>1.</b> <input type="text" id="em1" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(see)"> the boat show this weekend? I can get tickets for either Saturday or Sunday. I'd rather <b>2.</b> <input type="text" id="em2" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(go)"> on Sunday, I think, because I prefer <b>3.</b> <input type="text" id="em3" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(do)"> housework and errands on Saturdays. Also, I'd rather <b>4.</b> <input type="text" id="em4" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(take)"> the bus because I hate <b>5.</b> <input type="text" id="em5" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(drive)"> in a lot of traffic, and I'd kind of prefer <b>6.</b> <input type="text" id="em6" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-orange-600" placeholder="(get)"> there early. What do you think? Does all of that sound OK?
+                    </div>
+                    <div class="mt-6 text-center"><button onclick="checkEmail()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">Check Email</button></div>
+                </div>
+
+                <!-- C. More Practice: Tricky Choices -->
+                <div class="bg-fuchsia-50 p-8 rounded-2xl border border-fuchsia-200 mt-10 shadow-sm">
+                    <h3 class="text-xl font-bold text-fuchsia-900 mb-4"><i class="fas fa-tasks mr-2"></i>C. The Tricky Choices</h3>
+                    <p class="text-slate-700 mb-6 text-sm">Choose the correct verb form. Be careful with <i>would rather</i> (base verb) vs <i>would prefer</i> (infinitive)!</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 text-sm mb-2">1. I would rather _______ home tonight.</p>
+                            <select class="gram2-extra-quiz w-full border rounded p-2 outline-none font-bold text-fuchsia-700 bg-fuchsia-50" data-answer="stay"><option value="">-- Choose --</option><option value="stay">stay</option><option value="to stay">to stay</option><option value="staying">staying</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 text-sm mb-2">2. She prefers _______ books over watching movies.</p>
+                            <select class="gram2-extra-quiz w-full border rounded p-2 outline-none font-bold text-fuchsia-700 bg-fuchsia-50" data-answer="reading"><option value="">-- Choose --</option><option value="read">read</option><option value="reading">reading</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 text-sm mb-2">3. Would you like _______ to the concert with us?</p>
+                            <select class="gram2-extra-quiz w-full border rounded p-2 outline-none font-bold text-fuchsia-700 bg-fuchsia-50" data-answer="to go"><option value="">-- Choose --</option><option value="go">go</option><option value="to go">to go</option><option value="going">going</option></select>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <p class="font-bold text-slate-700 text-sm mb-2">4. They would prefer _______ dinner early.</p>
+                            <select class="gram2-extra-quiz w-full border rounded p-2 outline-none font-bold text-fuchsia-700 bg-fuchsia-50" data-answer="to eat"><option value="">-- Choose --</option><option value="eat">eat</option><option value="to eat">to eat</option><option value="eating">eating</option></select>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center"><button onclick="checkGrammar2Extra()" class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">Check Answers</button></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 6: SPEAKING -->
+        <section id="speaking" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-2">Let's Plan a Weekend! 🗣️</h2>
+                    <p class="text-lg text-slate-600">Use all your new grammar to plan a group activity.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-10">
+                    <!-- Confident Communicator -->
+                    <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 p-8 rounded-2xl border border-yellow-300 shadow-md flex flex-col justify-center">
+                        <h3 class="text-2xl font-black text-yellow-800 mb-4"><i class="fas fa-bullhorn text-yellow-500 mr-2"></i>Confident Communicator</h3>
+                        <h4 class="font-bold text-yellow-700 mb-2 text-lg border-b border-yellow-300 pb-2">Keep Talking!</h4>
+                        
+                        <div class="space-y-4 text-yellow-900 bg-white/60 p-4 rounded-xl shadow-sm">
+                            <div>
+                                <p class="font-bold text-green-700 mb-1">Agreeing with a proposal:</p>
+                                <ul class="list-disc list-inside text-sm pl-2">
+                                    <li>Sure.</li>
+                                    <li>That's fine with me.</li>
+                                    <li>That sounds good.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="font-bold text-red-600 mb-1">Objecting to a proposal:</p>
+                                <ul class="list-disc list-inside text-sm pl-2">
+                                    <li>The problem is that ...</li>
+                                    <li>Sorry, but I don't really like ...</li>
+                                    <li>Unfortunately, I can't ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The Task -->
+                    <div class="bg-blue-50 p-8 rounded-2xl border border-blue-200 flex flex-col">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4"><i class="fas fa-users mr-2"></i>Group Task</h3>
+                        
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-blue-100 space-y-4 flex-grow text-slate-700 text-sm">
+                            <p><b>Step 1:</b> Compare the lists of activities you created in the Listening section (Creative, Cultural, Physical, Social).</p>
+                            <p><b>Step 2:</b> Discuss and agree on a full weekend plan (Saturday and Sunday). Include at least 3 activities.</p>
+                            <p><b>Step 3:</b> Use the phrases: <i>I love/like/hate..., I would like to..., I prefer..., I'd rather...</i></p>
+                            
+                            <div class="bg-blue-100/50 p-3 rounded border border-blue-200 italic mt-4">
+                                <span class="font-bold">A:</span> "I'd like to go kayaking on Saturday."<br>
+                                <span class="font-bold">B:</span> "The problem is that I am afraid of falling in the water! I'd rather go for a drive."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: WRAP UP -->
+        <section id="wrapup" class="tab-content">
+            <div class="bg-gradient-to-br from-indigo-900 to-blue-800 p-10 rounded-3xl shadow-xl text-white text-center">
+                <i class="fas fa-flag-checkered text-6xl text-yellow-300 mb-4"></i>
+                <h2 class="text-4xl font-extrabold mb-4">Class 7 Complete!</h2>
+                <p class="text-xl text-blue-100 mb-10">You've mastered gerunds, preferences, and planning for fun!</p>
+                
+                <!-- Wrap up Questions -->
+                <div class="bg-white/10 p-8 rounded-2xl shadow-inner text-white text-center border border-white/20 backdrop-blur-md mb-8">
+                    <h3 class="text-2xl font-extrabold text-yellow-400 mb-6"><i class="fas fa-question-circle mr-2"></i>Final Wrap-Up Questions</h3>
+                    <p class="text-indigo-200 mb-6 text-sm">Discuss these final questions with your partner. Try to use gerunds correctly!</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 text-left max-w-4xl mx-auto">
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">1. What are you most <b>excited about doing</b> this weekend?</div>
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">2. Are there any chores you are <b>tired of doing</b>?</div>
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">3. What is something you are really <b>good at making</b>?</div>
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">4. Do you prefer <b>staying</b> in or <b>going</b> out on Friday nights?</div>
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">5. Would you rather <b>do</b> yoga or <b>play</b> basketball? Why?</div>
+                        <div class="bg-black/20 p-4 rounded-xl border border-white/10">6. What hobby are you <b>interested in trying</b> in the future?</div>
+                    </div>
+                </div>
+
+                <div class="bg-white/10 p-6 rounded-2xl border border-white/20 max-w-2xl mx-auto text-left shadow-inner">
+                    <h3 class="text-xl font-bold text-yellow-300 mb-3"><i class="fas fa-ticket-alt mr-2"></i>Exit Ticket</h3>
+                    <p class="mb-2 text-md">In the chat box, write one true sentence about yourself using:</p>
+                    <p class="font-bold text-lg text-center bg-black/20 p-2 rounded-lg border border-white/10">"I am looking forward to..."</p>
+                </div>
+                
+                <p class="mt-8 font-bold text-xl text-yellow-300">See you next class! 👋</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Navigation ---
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            document.getElementById(tabName).classList.add('active');
+            let activeBtn = document.getElementById("btn-" + tabName);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Warm Up Checker ---
+        function checkWarmup() {
+            const selects = document.querySelectorAll('.warmup-quiz');
+            selects.forEach(sel => {
+                sel.classList.remove('bg-green-100', 'text-green-700', 'border-green-400', 'bg-red-100', 'text-red-700', 'border-red-400');
+                if(sel.value === sel.getAttribute('data-answer')) {
+                    sel.classList.add('bg-green-100', 'text-green-700', 'border-green-400');
+                } else if (sel.value !== "") {
+                    sel.classList.add('bg-red-100', 'text-red-700', 'border-red-400');
+                }
+            });
+        }
+
+        // --- Mega Grammar Quiz Data & Logic ---
+        const megaQuizzes = {
+            subj: [
+                {q: "________ (eat) late at night is bad for your digestion.", a: "eating"},
+                {q: "________ (find) a parking space in the city center is difficult.", a: "finding"},
+                {q: "________ (travel) broadens your mind.", a: "traveling"}, // allow travelling too in check
+                {q: "________ (learn) a new language takes time and patience.", a: "learning"},
+                {q: "________ (swim) in the ocean is my favorite summer activity.", a: "swimming"},
+                {q: "________ (smoke) is prohibited in this building.", a: "smoking"},
+                {q: "________ (read) books before bed helps you sleep better.", a: "reading"},
+                {q: "________ (cook) for a large group can be stressful.", a: "cooking"},
+                {q: "________ (wake) up early is hard on Mondays.", a: "waking"},
+                {q: "________ (make) new friends gets harder as you get older.", a: "making"}
+            ],
+            obj: [
+                {q: "I enjoy ________ (watch) movies on rainy days.", a: "watching"},
+                {q: "She suggested ________ (go) to the museum.", a: "going"},
+                {q: "We need to keep ________ (try) until we succeed.", a: "trying"},
+                {q: "He didn't mind ________ (wait) for us.", a: "waiting"},
+                {q: "Have you finished ________ (clean) your room?", a: "cleaning"},
+                {q: "They miss ________ (live) near the beach.", a: "living"},
+                {q: "I can't stand ________ (listen) to loud music.", a: "listening"},
+                {q: "She avoids ________ (eat) sugar.", a: "eating"},
+                {q: "He practices ________ (play) the guitar every day.", a: "playing"},
+                {q: "I love ________ (shop) for new clothes.", a: "shopping"}
+            ],
+            prep: [
+                {q: "She is very good at ________ (paint).", a: "painting"},
+                {q: "He apologized for ________ (be) late to the meeting.", a: "being"},
+                {q: "We are excited about ________ (visit) our grandparents.", a: "visiting"},
+                {q: "I am interested in ________ (learn) more about history.", a: "learning"},
+                {q: "Are you afraid of ________ (fly)?", a: "flying"},
+                {q: "She is tired of ________ (work) on the weekends.", a: "working"},
+                {q: "They are thinking about ________ (buy) a new car.", a: "buying"},
+                {q: "I believe in ________ (tell) the truth.", a: "telling"},
+                {q: "Thank you for ________ (help) me with my homework.", a: "helping"},
+                {q: "I look forward to ________ (hear) from you soon.", a: "hearing"}
+            ]
+        };
+
+        function renderMegaQuiz() {
+            for (const category in megaQuizzes) {
+                const container = document.getElementById(`${category}-questions`);
+                let html = "";
+                megaQuizzes[category].forEach((item, index) => {
+                    html += `
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                            <span class="font-bold text-slate-400 w-6">${index + 1}.</span>
+                            <span class="flex-grow text-sm">${item.q.replace('________', `<input type="text" id="mq-${category}-${index}" class="quiz-input w-24 rounded px-2 py-1 text-center font-bold text-indigo-600" autocomplete="off">`)}</span>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+        }
+        renderMegaQuiz();
+
+        function switchMegaTab(tabId) {
+            document.querySelectorAll('.mega-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`mega-${tabId}`).classList.remove('hidden');
+            
+            // Reset button styles
+            const buttons = ['subj', 'obj', 'prep'];
+            buttons.forEach(id => {
+                const btn = document.getElementById(`mega-tab-${id}`);
+                btn.className = "px-4 py-2 rounded-lg font-bold text-indigo-600 bg-white border border-indigo-200 transition hover:bg-indigo-50";
+            });
+            
+            // Active button style
+            const activeBtn = document.getElementById(`mega-tab-${tabId}`);
+            if(tabId === 'subj') activeBtn.className = "px-4 py-2 rounded-lg font-bold text-white bg-indigo-600 transition shadow";
+            if(tabId === 'obj') activeBtn.className = "px-4 py-2 rounded-lg font-bold text-white bg-blue-600 transition shadow";
+            if(tabId === 'prep') activeBtn.className = "px-4 py-2 rounded-lg font-bold text-white bg-teal-600 transition shadow";
+        }
+
+        function checkMegaQuiz(category) {
+            megaQuizzes[category].forEach((item, index) => {
+                const input = document.getElementById(`mq-${category}-${index}`);
+                const val = input.value.toLowerCase().trim();
+                input.classList.remove('correct', 'incorrect');
+                
+                // Special case for traveling/travelling
+                let isCorrect = val === item.a;
+                if(item.a === "traveling" && val === "travelling") isCorrect = true;
+                
+                if (isCorrect) input.classList.add('correct');
+                else if (val !== "") input.classList.add('incorrect');
+            });
+        }
+
+        // --- Vocabulary Collocation Sorter ---
+        let selectedVocab = null;
+        function selectVocab(el) {
+            if(selectedVocab) selectedVocab.classList.remove('ring-4', 'ring-orange-400', 'bg-orange-100');
+            selectedVocab = el;
+            selectedVocab.classList.add('ring-4', 'ring-orange-400', 'bg-orange-100');
+        }
+        function moveToVocabZone(zone, category) {
+            if(!selectedVocab) return;
+            let targetContainer = zone.querySelector('div');
+            targetContainer.appendChild(selectedVocab);
+            selectedVocab.classList.remove('ring-4', 'ring-orange-400', 'bg-orange-100');
+            selectedVocab.classList.add('w-full', 'mb-1', 'bg-white', 'shadow-sm', 'text-center'); 
+            selectedVocab = null;
+        }
+
+        // --- Vocabulary Comments (Part B) ---
+        function checkComments() {
+            // Note: accepting 'doing' or 'making' based on context if strictly requested, but prompt lists specific answers.
+            const answers = {
+                'cb1': 'do', 'cb2': 'go', 'cb3': 'go', 'cb4': 'do',
+                'cb5': 'doing', 'cb6': 'do', 'cb7': 'make', 'cb8': 'making', // accepted capitalize check implicitly below by lowercase
+                'cb9': 'going', 'cb10': 'having', 'cb11': 'have', 'cb12': 'go'
+            };
+            
+            for (let id in answers) {
+                let input = document.getElementById(id);
+                let val = input.value.toLowerCase().trim();
+                input.classList.remove('correct', 'incorrect');
+                if(val === answers[id]) {
+                    input.classList.add('correct');
+                } else if (val !== "") {
+                    input.classList.add('incorrect');
+                }
+            }
+        }
+
+        // --- Grammar 2: Rules Check ---
+        function checkGrammar2Rules() {
+            // 1: inf, ing
+            // 2: inf
+            // 3: inf
+            // 4: base
+            const targets = {
+                'gram2-q1': ['inf', 'ing'],
+                'gram2-q2': ['inf'],
+                'gram2-q3': ['inf'],
+                'gram2-q4': ['base']
+            };
+            
+            let isPerfect = true;
+            
+            for(let groupClass in targets) {
+                let checkboxes = document.querySelectorAll(`.${groupClass}`);
+                let checkedVals = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+                
+                // Check if arrays match
+                let match = checkedVals.length === targets[groupClass].length && 
+                            checkedVals.every(val => targets[groupClass].includes(val));
+                
+                // Styling the parent container based on result
+                let parent = checkboxes[0].closest('.bg-white');
+                parent.classList.remove('border-green-400', 'border-red-400', 'bg-green-50', 'bg-red-50');
+                
+                if(match) {
+                    parent.classList.add('border-green-400', 'bg-green-50');
+                } else {
+                    parent.classList.add('border-red-400', 'bg-red-50');
+                    isPerfect = false;
+                }
+            }
+            
+            const fb = document.getElementById('g2-rules-fb');
+            fb.classList.remove('hidden', 'text-green-600', 'text-red-500');
+            if(isPerfect) {
+                fb.innerText = "All rules correct! 🎉";
+                fb.classList.add('text-green-600');
+            } else {
+                fb.innerText = "Check the red boxes again.";
+                fb.classList.add('text-red-500');
+            }
+        }
+
+        // --- Grammar 2: Email ---
+        function checkEmail() {
+            // 1. to see, 2. go, 3. doing / to do, 4. take, 5. driving / to drive, 6. to get
+            const answers = {
+                'em1': ['to see'],
+                'em2': ['go'],
+                'em3': ['doing', 'to do'],
+                'em4': ['take'],
+                'em5': ['driving', 'to drive'],
+                'em6': ['to get']
+            };
+
+            for (let id in answers) {
+                let input = document.getElementById(id);
+                let val = input.value.toLowerCase().trim();
+                input.classList.remove('correct', 'incorrect');
+                if(answers[id].includes(val)) {
+                    input.classList.add('correct');
+                } else if (val !== "") {
+                    input.classList.add('incorrect');
+                }
+            }
+        }
+
+        // --- Grammar 2 Extra: Tricky Choices ---
+        function checkGrammar2Extra() {
+            const selects = document.querySelectorAll('.gram2-extra-quiz');
+            selects.forEach(sel => {
+                sel.classList.remove('bg-green-100', 'text-green-700', 'border-green-400', 'bg-red-100', 'text-red-700', 'border-red-400');
+                if(sel.value === sel.getAttribute('data-answer')) {
+                    sel.classList.add('bg-green-100', 'text-green-700', 'border-green-400');
+                } else if (sel.value !== "") {
+                    sel.classList.add('bg-red-100', 'text-red-700', 'border-red-400');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
